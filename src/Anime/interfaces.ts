@@ -116,6 +116,25 @@ export interface AnimeStaff {
     positions: Array<string>;
 }
 
+export interface AnimeEpisodes {
+    pagination: Pagination;
+    data: Array<AnimeEpisodesData>;
+}
+
+//Non Export Interface
+interface AnimeEpisodesData {
+    mal_id: number;
+    url: string;
+    title: string;
+    title_japanese: string;
+    title_romanji: string;
+    duration: number;
+    aired: string;
+    filler: boolean;
+    recap: boolean;
+    forum_url: string;
+}
+
 //Common Interface
 interface Person {
     mal_id: number;
@@ -126,6 +145,13 @@ interface Person {
         };
     };
     name: string;
+}
+
+interface Pagination {
+    pagination: {
+        last_visible_page: number;
+        has_next_page: boolean;
+    };
 }
 
 //Constants
