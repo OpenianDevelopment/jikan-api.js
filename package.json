@@ -1,0 +1,16 @@
+{
+  "name": "jikan-api.js",
+  "version": "1.0.0",
+  "description": "A api wrapper for jikan v4 api",
+  "main": "dist/index.js",
+  "author": "Rohan Kumar",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node-fetch": "^2.5.12",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.3.2"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.2"
+  }
+}
