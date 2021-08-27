@@ -1,10 +1,17 @@
 {
   "name": "jikan-api.js",
   "version": "1.0.0",
-  "description": "A api wrapper for jikan v4 api",
+  "description": "API Wrapper for Jikan v4",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "author": "Rohan Kumar",
   "license": "MIT",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
   "dependencies": {
     "@types/node-fetch": "^2.5.12",
     "node-fetch": "^2.6.1",
@@ -13,5 +20,10 @@
   "devDependencies": {
     "chalk": "^4.1.2",
     "typedoc": "^0.21.6"
-  }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/rohank05/jikan-api.js",
+  "bugs": "https://github.com/rohank05/jikan-api.js/issues"
 }
