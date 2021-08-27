@@ -37,8 +37,7 @@ getAnimeById(1).then(res=> console.log(res));
 
 ## Links
 
-- [Website](https://jikan.openian.dev/)
-- [Documentation](https://jikan.openian.dev/)
+- [Documentation](https://jikanjs.openian.dev/)
 - [Discord server](https://menhera-chan.in/support)
 - [GitHub](https://github.com/rohank05/jikan-api.js)
 - [NPM](https://www.npmjs.com/package/jikan-api.js)
