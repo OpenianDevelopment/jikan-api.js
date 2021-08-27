@@ -1,10 +1,2 @@
-import {
-    getAnimeById,
-    getAnimeCharacters,
-    getAnimeEpisodeById,
-} from "./Anime/functions";
-
-(async () => {
-    const res = await getAnimeEpisodeById(1, 1);
-    console.log(res.data.url);
-})();
+export * from "./Anime/functions";
+export * from "./Anime/interfaces";
