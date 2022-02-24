@@ -107,7 +107,7 @@ export async function getMangaSearch(
     const urlstring = `manga?
     ${query.page ? "&page=" + query.page : ""}
     ${query.limit ? "&limit=" + query.limit : ""}
-    ${query.q ? "q=" + query.q : ""}
+    ${query.q ? "&q=" + query.q : ""}
     ${query.type ? "&type=" + query.type : ""}
     ${query.score ? "&score=" + query.score : ""}
     ${query.min_score ? "&min_score=" + query.min_score : ""}
