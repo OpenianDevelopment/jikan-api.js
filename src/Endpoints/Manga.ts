@@ -14,7 +14,7 @@ import {
     MangaSearch,
     MangaTopicFilter,
     MangaSearchQuery,
-} from "./interfaces";
+} from "../Static/MangaInterface";
 import { makeRequest } from "../Utils/APIRequest";
 
 export async function getMangaById(mal_id: number): Promise<MangaDataById> {

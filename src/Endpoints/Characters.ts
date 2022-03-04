@@ -6,7 +6,7 @@ import {
     CharacterPictures,
     CharacterSearch,
     CharacterSearchQuery,
-} from "./interfaces";
+} from "../Static/CharsInterface";
 import { makeRequest } from "../Utils/APIRequest";
 
 export async function getCharacterById(mal_id: number): Promise<CharacterById> {
