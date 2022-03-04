@@ -15,96 +15,152 @@ import {
     MangaTopicFilter,
     MangaSearchQuery,
 } from "../Static/MangaInterface";
-import { makeRequest } from "../Utils/APIRequest";
+import Jikan from "./Jikan";
 
-export async function getMangaById(mal_id: number): Promise<MangaDataById> {
-    const urlString = `manga/${mal_id}`;
-    const result = await makeRequest(urlString);
-    return result as MangaDataById;
-}
+export default class Characters {
+    private manager: Jikan;
 
-export async function getMangaCharacters(
-    mal_id: number
-): Promise<MangaCharacters> {
-    const urlString = `manga/${mal_id}/characters`;
-    const result = await makeRequest(urlString);
-    return result as MangaCharacters;
-}
+    constructor(manager: Jikan) {
+        this.manager = manager;
+    }
 
-export async function getMangaNews(mal_id: number): Promise<MangaNews> {
-    const urlString = `manga/${mal_id}/news`;
-    const result = await makeRequest(urlString);
-    return result as MangaNews;
-}
+    /**
+     * Get a manga using it's MyAnimeList ID
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaDataById>}
+     */
+    public async getMangaById(mal_id: number): Promise<MangaDataById> {
+        const urlString = `manga/${mal_id}`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaTopics(
-    mal_id: number,
-    filter: MangaTopicFilter
-): Promise<MangaTopics> {
-    const urlString = `manga/${mal_id}/forum?filter=${filter}`;
-    const result = await makeRequest(urlString);
-    return result as MangaTopics;
-}
+    /**
+     * Get the characters of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaCharacters>}
+     */
+    public async getMangaCharacters(mal_id: number): Promise<MangaCharacters> {
+        const urlString = `manga/${mal_id}/characters`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaPictures(mal_id: number): Promise<MangaPictures> {
-    const urlString = `manga/${mal_id}/pictures`;
-    const result = await makeRequest(urlString);
-    return result as MangaPictures;
-}
+    /**
+     * Get the news of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaNews>}
+     */
+    public async getMangaNews(mal_id: number): Promise<MangaNews> {
+        const urlString = `manga/${mal_id}/news`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaStatistics(
-    mal_id: number
-): Promise<MangaStatistics> {
-    const urlString = `manga/${mal_id}/statistics`;
-    const result = await makeRequest(urlString);
-    return result as MangaStatistics;
-}
+    /**
+     * Get the topics of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @param {MangaTopicFilter | undefined} filter Topic filters
+     * @return {Promise<MangaTopics>}
+     */
+    public async getMangaTopics(
+        mal_id: number,
+        filter?: MangaTopicFilter
+    ): Promise<MangaTopics> {
+        let urlString = `manga/${mal_id}/forum`;
+        if (filter) urlString + `?filter=${filter}`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaMoreInfo(mal_id: number): Promise<MangaMoreInfo> {
-    const UrlString = `manga/${mal_id}/moreinfo`;
-    const result = await makeRequest(UrlString);
-    return result as MangaMoreInfo;
-}
-export async function getMangaRecommendations(
-    mal_id: number
-): Promise<MangaRecommendations> {
-    const urlString = `manga/${mal_id}/recommendations`;
-    const result = await makeRequest(urlString);
-    return result as MangaRecommendations;
-}
+    /**
+     * Get the pictures of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaPictures>}
+     */
+    public async getMangaPictures(mal_id: number): Promise<MangaPictures> {
+        const urlString = `manga/${mal_id}/pictures`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaUserUpdates(
-    mal_id: number
-): Promise<MangaUserUpdates> {
-    const urlString = `manga/${mal_id}/userupdates`;
-    const result = await makeRequest(urlString);
-    return result as MangaUserUpdates;
-}
+    /**
+     * Get statistics of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaStatistics>}
+     */
+    public async getMangaStatistics(mal_id: number): Promise<MangaStatistics> {
+        const urlString = `manga/${mal_id}/statistics`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaReviews(mal_id: number): Promise<MangaReviews> {
-    const urlstring = `manga/${mal_id}/reviews`;
-    const result = await makeRequest(urlstring);
-    return result as MangaReviews;
-}
+    /**
+     * Get more info about a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaMoreInfo>}
+     */
+    public async getMangaMoreInfo(mal_id: number): Promise<MangaMoreInfo> {
+        const urlString = `manga/${mal_id}/moreinfo`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaRelations(
-    mal_id: number
-): Promise<MangaRelations> {
-    const urlstring = `manga/${mal_id}/relations`;
-    const result = await makeRequest(urlstring);
-    return result as MangaRelations;
-}
+    /**
+     * Get manga recommendations
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaRecommendations>}
+     */
+    public async getMangaRecommendations(
+        mal_id: number
+    ): Promise<MangaRecommendations> {
+        const urlString = `manga/${mal_id}/recommendations`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaExternal(mal_id: number): Promise<MangaExternal> {
-    const urlString = `manga/${mal_id}/external`;
-    const result = await makeRequest(urlString);
-    return result as MangaExternal;
-}
+    /**
+     * Get user updates of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaUserUpdates>}
+     */
+    public async getMangaUserUpdates(
+        mal_id: number
+    ): Promise<MangaUserUpdates> {
+        const urlString = `manga/${mal_id}/userupdates`;
+        return await this.manager.makeRequest(urlString);
+    }
 
-export async function getMangaSearch(
-    query: MangaSearchQuery
-): Promise<MangaSearch> {
-    const urlstring = `manga?
+    /**
+     * Get manga reviews
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaReviews>}
+     */
+    public async getMangaReviews(mal_id: number): Promise<MangaReviews> {
+        const urlString = `manga/${mal_id}/reviews`;
+        return await this.manager.makeRequest(urlString);
+    }
+
+    /**
+     * Get the relations of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaRelations>}
+     */
+    public async getMangaRelations(mal_id: number): Promise<MangaRelations> {
+        const urlString = `manga/${mal_id}/relations`;
+        return await this.manager.makeRequest(urlString);
+    }
+
+
+    /**
+     * Get the external links of a manga
+     * @param {number} mal_id MyAnimeList ID
+     * @return {Promise<MangaExternal>}
+     */
+    public async getMangaExternal(mal_id: number): Promise<MangaExternal> {
+        const urlString = `manga/${mal_id}/external`;
+        return await this.manager.makeRequest(urlString);
+    }
+
+    /**
+     * Search for a manga using query parameters
+     * @param {MangaSearchQuery} query Query parameters
+     * @return {Promise<MangaSearch>}
+     */
+    public async getMangaSearch(query: MangaSearchQuery): Promise<MangaSearch> {
+        const urlString = `manga?
     ${query.page ? "&page=" + query.page : ""}
     ${query.limit ? "&limit=" + query.limit : ""}
     ${query.q ? "&q=" + query.q : ""}
@@ -121,6 +177,6 @@ export async function getMangaSearch(
     ${query.letter ? "&letter=" + query.letter : ""}
     ${query.magazine ? "&magazine=" + query.magazine : ""}
     `.replace(/\n/g, ""); //Making sure there is no new lines
-    const res = await makeRequest(urlstring);
-    return res as MangaSearch;
+        return await this.manager.makeRequest(urlString);
+    }
 }
