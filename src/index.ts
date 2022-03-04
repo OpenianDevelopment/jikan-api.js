@@ -1,2 +1,3 @@
-export * from "./Anime/functions";
-export * from "./Anime/interfaces";
+export * from "./Endpoints/Jikan";
+
+
