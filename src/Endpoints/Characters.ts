@@ -22,7 +22,7 @@ export default class Characters {
      * @return {Promise<CharacterById>}
      */
     public async getCharacterById(mal_id: number): Promise<CharacterById> {
-        const urlString = `characters/${mal_id}`;
+        const urlString = `/characters/${mal_id}`;
         return await this.manager.makeRequest(urlString);
     }
     
@@ -32,7 +32,7 @@ export default class Characters {
      * @return {Promise<CharacterAnime>}
      */
     public async getCharacterAnime(mal_id: number): Promise<CharacterAnime> {
-        const urlString = `characters/${mal_id}/anime`;
+        const urlString = `/characters/${mal_id}/anime`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -42,7 +42,7 @@ export default class Characters {
      * @return {Promise<CharacterManga>}
      */
     public async getCharacterManga(mal_id: number): Promise<CharacterManga> {
-        const urlString = `characters/${mal_id}/manga`;
+        const urlString = `/characters/${mal_id}/manga`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -54,7 +54,7 @@ export default class Characters {
     public async getCharacterVoiceActors(
         mal_id: number
     ): Promise<CharacterVoiceActors> {
-        const urlString = `characters/${mal_id}/voices`;
+        const urlString = `/characters/${mal_id}/voices`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -66,7 +66,7 @@ export default class Characters {
     public async getCharacterPictures(
         mal_id: number
     ): Promise<CharacterPictures> {
-        const urlString = `characters/${mal_id}/pictures`;
+        const urlString = `/characters/${mal_id}/pictures`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -78,7 +78,7 @@ export default class Characters {
     public async getCharactersSearch(
         query: CharacterSearchQuery
     ): Promise<CharacterSearch> {
-        const urlString = `characters?
+        const urlString = `/characters?
     ${query.page ? "&page=" + query.page : ""}
     ${query.limit ? "&limit=" + query.limit : ""}
     ${query.q ? "&q=" + query.q : ""}

@@ -30,7 +30,7 @@ export default class Characters {
      * @return {Promise<MangaDataById>}
      */
     public async getMangaById(mal_id: number): Promise<MangaDataById> {
-        const urlString = `manga/${mal_id}`;
+        const urlString = `/manga/${mal_id}`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -40,7 +40,7 @@ export default class Characters {
      * @return {Promise<MangaCharacters>}
      */
     public async getMangaCharacters(mal_id: number): Promise<MangaCharacters> {
-        const urlString = `manga/${mal_id}/characters`;
+        const urlString = `/manga/${mal_id}/characters`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -50,7 +50,7 @@ export default class Characters {
      * @return {Promise<MangaNews>}
      */
     public async getMangaNews(mal_id: number): Promise<MangaNews> {
-        const urlString = `manga/${mal_id}/news`;
+        const urlString = `/manga/${mal_id}/news`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -64,7 +64,7 @@ export default class Characters {
         mal_id: number,
         filter?: MangaTopicFilter
     ): Promise<MangaTopics> {
-        let urlString = `manga/${mal_id}/forum`;
+        let urlString = `/manga/${mal_id}/forum`;
         if (filter) urlString + `?filter=${filter}`;
         return await this.manager.makeRequest(urlString);
     }
@@ -75,7 +75,7 @@ export default class Characters {
      * @return {Promise<MangaPictures>}
      */
     public async getMangaPictures(mal_id: number): Promise<MangaPictures> {
-        const urlString = `manga/${mal_id}/pictures`;
+        const urlString = `/manga/${mal_id}/pictures`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -85,7 +85,7 @@ export default class Characters {
      * @return {Promise<MangaStatistics>}
      */
     public async getMangaStatistics(mal_id: number): Promise<MangaStatistics> {
-        const urlString = `manga/${mal_id}/statistics`;
+        const urlString = `/manga/${mal_id}/statistics`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -95,7 +95,7 @@ export default class Characters {
      * @return {Promise<MangaMoreInfo>}
      */
     public async getMangaMoreInfo(mal_id: number): Promise<MangaMoreInfo> {
-        const urlString = `manga/${mal_id}/moreinfo`;
+        const urlString = `/manga/${mal_id}/moreinfo`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -107,7 +107,7 @@ export default class Characters {
     public async getMangaRecommendations(
         mal_id: number
     ): Promise<MangaRecommendations> {
-        const urlString = `manga/${mal_id}/recommendations`;
+        const urlString = `/manga/${mal_id}/recommendations`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -119,7 +119,7 @@ export default class Characters {
     public async getMangaUserUpdates(
         mal_id: number
     ): Promise<MangaUserUpdates> {
-        const urlString = `manga/${mal_id}/userupdates`;
+        const urlString = `/manga/${mal_id}/userupdates`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -129,7 +129,7 @@ export default class Characters {
      * @return {Promise<MangaReviews>}
      */
     public async getMangaReviews(mal_id: number): Promise<MangaReviews> {
-        const urlString = `manga/${mal_id}/reviews`;
+        const urlString = `/manga/${mal_id}/reviews`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -139,7 +139,7 @@ export default class Characters {
      * @return {Promise<MangaRelations>}
      */
     public async getMangaRelations(mal_id: number): Promise<MangaRelations> {
-        const urlString = `manga/${mal_id}/relations`;
+        const urlString = `/manga/${mal_id}/relations`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -150,7 +150,7 @@ export default class Characters {
      * @return {Promise<MangaExternal>}
      */
     public async getMangaExternal(mal_id: number): Promise<MangaExternal> {
-        const urlString = `manga/${mal_id}/external`;
+        const urlString = `/manga/${mal_id}/external`;
         return await this.manager.makeRequest(urlString);
     }
 
@@ -160,7 +160,7 @@ export default class Characters {
      * @return {Promise<MangaSearch>}
      */
     public async getMangaSearch(query: MangaSearchQuery): Promise<MangaSearch> {
-        const urlString = `manga?
+        const urlString = `/manga?
     ${query.page ? "&page=" + query.page : ""}
     ${query.limit ? "&limit=" + query.limit : ""}
     ${query.q ? "&q=" + query.q : ""}
