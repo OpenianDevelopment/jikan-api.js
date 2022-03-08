@@ -193,6 +193,11 @@ export default class Anime {
         return await this.manager.makeRequest(urlString);
     }
 
+    /**
+     * Search for an anime using query parameters
+     * @param {AnimeSearchQuery} search_query Query parameters
+     * @return {Promise<AnimeSearch>}
+     */
     public async getAnimeSearch(search_query: AnimeSearchQuery): Promise<AnimeSearch> {
         const urlString = `anime?${
             search_query.q ? "&q=" + search_query.q : ""
