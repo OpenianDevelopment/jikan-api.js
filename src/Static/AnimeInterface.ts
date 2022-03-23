@@ -253,16 +253,16 @@ export interface AnimeEpisodesData {
 }
 
 export interface AnimeSearchQuery {
-  page?: number;
-  limit?: number;
-  q?: string;
-  type?: "tv" | "movie" | "ova" | "special" | "ona" | "music";
-  score?: number;
-  status?: "airing" | "complete" | "upcoming";
-  rating?: "g" | "pg" | "pg13" | "r17" | "r" | "rx";
-  sfw?: boolean;
-  genres?: string;
-  order_by?:
+  page: number;
+  limit: number;
+  q: string;
+  type: "tv" | "movie" | "ova" | "special" | "ona" | "music";
+  score: number;
+  status: "airing" | "complete" | "upcoming";
+  rating: "g" | "pg" | "pg13" | "r17" | "r" | "rx";
+  sfw: boolean;
+  genres: string;
+  order_by:
     | "mal_id"
     | "title"
     | "type"
@@ -276,9 +276,9 @@ export interface AnimeSearchQuery {
     | "popularity"
     | "members"
     | "favorites";
-  sort?: "desc" | "asc";
-  letter?: string;
-  producer?: string;
+  sort: "desc" | "asc";
+  letter: string;
+  producer: string;
 }
 
 export interface AnimeNewsData {

@@ -1,7 +1,9 @@
+/* This is a TypeScript interface. It is used to describe the shape of the data that will be returned by the API. */
 export interface MangaDataById {
     data: MangaData;
 }
 
+/* A TypeScript interface. It is used to describe the shape of the data that will be returned by the API. */
 export interface MangaCharacters {
     data: {
         character: {
@@ -22,6 +24,7 @@ export interface MangaCharacters {
         role: string;
     }[];
 }
+
 
 export interface MangaNews {
     pagination: Pagination;

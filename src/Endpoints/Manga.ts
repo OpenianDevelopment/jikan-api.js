@@ -57,7 +57,7 @@ export default class Characters {
     /**
      * Get the topics of a manga
      * @param {number} mal_id MyAnimeList ID
-     * @param {MangaTopicFilter | undefined} filter Topic filters
+     * @param {MangaTopicFilter} [filter] Topic filters
      * @return {Promise<MangaTopics>}
      */
     public async getMangaTopics(

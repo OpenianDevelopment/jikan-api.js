@@ -17,7 +17,7 @@ export default class Characters {
     }
 
     /**
-     * Get a character using it's MyAnimeList ID
+     * Get a character using its MyAnimeList ID
      * @param {number} mal_id MyAnimeList ID
      * @return {Promise<CharacterById>}
      */

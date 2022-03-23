@@ -1,6 +1,11 @@
+/**
+ * @typedef {Object} CharacterById
+ * @property {CharacterData} data The data of the character
+ */
 export interface CharacterById {
     data: CharacterData;
 }
+
 
 export interface CharacterAnime {
     data: {
@@ -125,10 +130,10 @@ export interface CharacterData {
 }
 
 export interface CharacterSearchQuery {
-    page?: number;
-    limit?: number;
-    q?: string;
-    order_by?: "mal_id" | "name" | "favorites";
-    sort?: "desc" | "asc";
-    letter?: string
+    page: number;
+    limit: number;
+    q: string;
+    order_by: "mal_id" | "name" | "favorites";
+    sort: "desc" | "asc";
+    letter: string
 }
