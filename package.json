@@ -1,6 +1,6 @@
 {
   "name": "jikan-api.js",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "API Wrapper for Jikan v4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
