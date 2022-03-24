@@ -31,15 +31,22 @@ npm install jikan-api.js
 ## Example usage
 
 ```js
-const jikan = require('jikan-api.js');
-getAnimeById(1).then(res=> console.log(res));
+const {Jikan} = require('jikan-api.js');
+const manager = new Jikan();
+
+manager.anime.getAnimeById(1).then(res=> console.log(res));
 ```
+
+## Available Endpoints:
+- Anime
+- Manga
+- Characters
 
 ## Links
 
-- [Documentation](https://jikanjs.openian.dev/)
+- Documentation is unavailable and in WIP. (Want to help join our discord server and ping any dev available).
 - [Discord server](https://menhera-chan.in/support)
-- [GitHub](https://github.com/rohank05/jikan-api.js)
+- [GitHub](https://github.com/OpenianDevelopment/jikan-api.js)
 - [NPM](https://www.npmjs.com/package/jikan-api.js)
 
 ## Help
