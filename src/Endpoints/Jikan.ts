@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import fetch from "cross-fetch";
 import { JikanOptions } from "../Static/Interfaces";
 import Anime from "./Anime";
 import Manga from "./Manga";
@@ -30,8 +30,7 @@ export default class Jikan {
     }
 
     public async makeRequest(url: string): Promise<any> {
-        return await fetch(`${this._baseurl}${url}`, {
-            method: "GET"
-        }).then((res) => res.json());
+        return await fetch(`${this._baseurl}${url}`)
+        .then((res) => res.json());
     }
 }
