@@ -1,0 +1,12 @@
+{
+  "name": "jikan-api.js",
+  "version": "2.0.0",
+  "description": "API Wrapper for Jikan API written in typescript",
+  "main": "dist/index.js",
+  "repository": "https://github.com/OpenianDevelopment/jikan-api.js.git",
+  "author": "Rohan Kumar <rohan.shuvam@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
