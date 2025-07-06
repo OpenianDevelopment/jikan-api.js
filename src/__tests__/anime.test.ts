@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Test suite for the Anime endpoint class
+ * Tests all methods of the Anime class to ensure proper API endpoint calls
+ * and response handling using mocked HTTP client
+ */
+
 import { Anime } from '../endpoints/anime';
 import JikanHttpClient from '../client/http-client';
 import { 
@@ -20,24 +26,28 @@ import {
 } from '../types/anime';
 import JikanResponse from '../types/common';
 
-// Mock the HTTP client
+// Mock the HTTP client to avoid actual network calls in tests
 jest.mock('../client/http-client');
 
 describe('Anime Class', () => {
     let animeClient: Anime;
     let mockHttpClient: jest.Mocked<JikanHttpClient>;
 
+    // Set up fresh instances before each test
     beforeEach(() => {
         mockHttpClient = new JikanHttpClient() as jest.Mocked<JikanHttpClient>;
         animeClient = new Anime(mockHttpClient);
     });
 
+    // Clean up mocks after each test to prevent test interference
     afterEach(() => {
         jest.clearAllMocks();
     });
 
+    // Test basic anime information retrieval
     describe('getAnimeByFullId', () => {
         it('should fetch anime by ID', async () => {
+            // Mock response with minimal required fields for AnimeResponse
             const mockResponse: JikanResponse<AnimeResponse> = {
                 data: {
                     mal_id: 1,
@@ -71,10 +81,13 @@ describe('Anime Class', () => {
                 }
             };
 
+            // Configure mock to return our test data
             mockHttpClient.get.mockResolvedValue(mockResponse);
 
+            // Execute the method under test
             const result = await animeClient.getAnimeByFullId(1);
 
+            // Verify the correct endpoint was called and result is as expected
             expect(mockHttpClient.get).toHaveBeenCalledWith('/anime/1');
             expect(result).toEqual(mockResponse);
         });
@@ -512,6 +525,7 @@ describe('Anime Class', () => {
         });
     });
 
+    // Test anime search functionality with various parameter combinations
     describe('searchAnime', () => {
         it('should search anime without parameters', async () => {
             const mockResponse: JikanResponse<AnimeResponse[]> = {
@@ -568,11 +582,14 @@ describe('Anime Class', () => {
         });
     });
 
+    // Test error handling scenarios
     describe('Error handling', () => {
         it('should handle HTTP client errors', async () => {
+            // Mock HTTP client to throw an error
             const error = new Error('Network error');
             mockHttpClient.get.mockRejectedValue(error);
 
+            // Verify that the error is properly propagated
             await expect(animeClient.getAnimeByFullId(1)).rejects.toThrow('Network error');
         });
     });

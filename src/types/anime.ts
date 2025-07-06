@@ -1,32 +1,64 @@
+/**
+ * @fileoverview Type definitions for anime-related API responses
+ */
+
+/**
+ * Main anime response interface containing all anime information
+ * @interface AnimeResponse
+ */
 interface AnimeResponse {
+    /** MyAnimeList ID of the anime */
     mal_id: number;
+    /** URL to the anime's MyAnimeList page */
     url: string;
+    /** Image URLs for the anime in different formats and sizes */
     images: {
+        /** JPEG format images */
         jpg: {
+            /** Standard image URL */
             image_url?: string;
+            /** Small-sized image URL */
             small_image_url?: string;
+            /** Large-sized image URL */
             large_image_url?: string;
         };
+        /** WebP format images */
         webp: {
+            /** Standard image URL */
             image_url?: string;
+            /** Small-sized image URL */
             small_image_url?: string;
+            /** Large-sized image URL */
             large_image_url?: string;
         };
     };
+    /** Trailer information */
     trailer: {
+        /** YouTube video ID */
         youtube_id?: string;
+        /** Direct URL to the trailer */
         url?: string;
+        /** Embeddable URL for the trailer */
         embed_url?: string;
     };
+    /** Whether the anime entry is approved by MyAnimeList */
     approved: boolean;
+    /** Array of titles in different languages */
     titles: {
+        /** Type of the title (e.g., "Default", "English", "Japanese") */
         type: string;
+        /** The actual title text */
         title: string;
     }[];
+    /** Type of anime */
     type?: "TV" | "OVA" | "Movie" | "Special" | "ONA" | "Music";
+    /** Source material (e.g., "Manga", "Light novel", "Original") */
     source?: string;
+    /** Number of episodes */
     episodes?: number;
+    /** Current airing status */
     status?: "Finished Airing" | "Currently Airing" | "Not yet aired";
+    /** Whether the anime is currently airing */
     airing: boolean;
     aired: {
         from?: string;

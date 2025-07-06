@@ -1,0 +1,6 @@
+/**
+ * @fileoverview Endpoint module exports
+ * This file serves as the main export point for all API endpoint classes
+ */
+
+export { Anime } from './anime';
