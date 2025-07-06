@@ -5,3 +5,4 @@
 
 export { Anime } from './anime';
 export { Manga } from './manga';
+export { Characters } from './characters';

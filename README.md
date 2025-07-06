@@ -10,7 +10,7 @@ A modern TypeScript wrapper for the [Jikan API](https://jikan.moe/) - the unoffi
 
 - 🎯 **Full TypeScript support** with comprehensive type definitions
 - 🚀 **Modern ES modules** - Tree-shakable and lightweight
-- 📚 **Complete API coverage** - All Jikan v4 anime and manga endpoints
+- 📚 **Complete API coverage** - All Jikan v4 anime, manga, and character endpoints
 - 🛡️ **Built-in error handling** - Graceful API error management
 - 🧪 **Thoroughly tested** - 100% test coverage
 - 📖 **Extensive documentation** - JSDoc comments for all methods
@@ -44,6 +44,10 @@ console.log(anime.data.titles[0].title); // "Cowboy Bebop"
 // Get manga information
 const manga = await jikan.manga.getMangaByFullId(1);
 console.log(manga.data.titles[0].title); // "Monster"
+
+// Get character information
+const character = await jikan.characters.getCharacterByFullId(1);
+console.log(character.data.name); // "Spike Spiegel"
 
 // Search for anime
 const animeResults = await jikan.anime.searchAnime({ 
@@ -630,6 +634,99 @@ updates.data.forEach(update => {
 });
 ```
 
+### Characters Endpoints
+
+#### Basic Information
+
+##### `getCharacterByFullId(id: number)`
+
+Retrieves complete character information by MyAnimeList ID.
+
+```typescript
+const character = await jikan.characters.getCharacterByFullId(1);
+console.log({
+  name: character.data.name,
+  nameKanji: character.data.name_kanji,
+  nicknames: character.data.nicknames,
+  favorites: character.data.favorites,
+  about: character.data.about
+});
+```
+
+##### `getCharacterById(id: number)`
+
+Retrieves basic character information by MyAnimeList ID.
+
+```typescript
+const character = await jikan.characters.getCharacterById(1);
+console.log({
+  name: character.data.name,
+  favorites: character.data.favorites,
+  url: character.data.url
+});
+```
+
+#### Appearances & Media
+
+##### `getCharacterAnime(id: number)`
+
+Get anime appearances for a character.
+
+```typescript
+const animeAppearances = await jikan.characters.getCharacterAnime(1);
+animeAppearances.data.forEach(appearance => {
+  console.log({
+    title: appearance.anime.title,
+    role: appearance.role,
+    url: appearance.anime.url
+  });
+});
+```
+
+##### `getCharacterManga(id: number)`
+
+Get manga appearances for a character.
+
+```typescript
+const mangaAppearances = await jikan.characters.getCharacterManga(1);
+mangaAppearances.data.forEach(appearance => {
+  console.log({
+    title: appearance.manga.title,
+    role: appearance.role,
+    url: appearance.manga.url
+  });
+});
+```
+
+##### `getCharacterVoices(id: number)`
+
+Get voice actor information for a character.
+
+```typescript
+const voices = await jikan.characters.getCharacterVoices(1);
+voices.data.forEach(voice => {
+  console.log({
+    voiceActor: voice.person.name,
+    language: voice.language,
+    url: voice.person.url
+  });
+});
+```
+
+##### `getCharacterPictures(id: number)`
+
+Get picture gallery for a character.
+
+```typescript
+const pictures = await jikan.characters.getCharacterPictures(1);
+pictures.data.forEach(picture => {
+  console.log({
+    large: picture.large_image_url,
+    small: picture.small_image_url
+  });
+});
+```
+
 ## Error Handling
 
 The library throws errors for failed API requests:
@@ -648,7 +745,7 @@ try {
 This library is written in TypeScript and provides comprehensive type definitions:
 
 ```typescript
-import Jikan, { AnimeResponse, MangaResponse, JikanResponse } from 'jikan-api.js';
+import Jikan, { AnimeResponse, MangaResponse, CharacterResponse, JikanResponse } from 'jikan-api.js';
 
 const jikan = new Jikan();
 
@@ -658,6 +755,9 @@ const anime: JikanResponse<AnimeResponse> = await jikan.anime.getAnimeByFullId(1
 // Full type safety for manga
 const manga: JikanResponse<MangaResponse> = await jikan.manga.getMangaByFullId(1);
 
+// Full type safety for characters
+const character: JikanResponse<CharacterResponse> = await jikan.characters.getCharacterByFullId(1);
+
 // TypeScript will provide autocomplete and type checking
 console.log(anime.data.titles[0].title);
 console.log(anime.data.score);
@@ -666,6 +766,10 @@ console.log(anime.data.episodes);
 console.log(manga.data.titles[0].title);
 console.log(manga.data.score);
 console.log(manga.data.chapters);
+
+console.log(character.data.name);
+console.log(character.data.nicknames);
+console.log(character.data.favorites);
 ```
 
 ## Pagination
@@ -872,6 +976,99 @@ async function compareAnimeAndManga(animeId: number, mangaId: number) {
 
 // Usage
 const comparison = await compareAnimeAndManga(1, 1);
+```
+
+### Get Character Details with Appearances
+
+```typescript
+async function getCharacterDetails(id: number) {
+  // Get all information about a character
+  const [
+    character,
+    animeAppearances,
+    mangaAppearances,
+    voices,
+    pictures
+  ] = await Promise.all([
+    jikan.characters.getCharacterByFullId(id),
+    jikan.characters.getCharacterAnime(id),
+    jikan.characters.getCharacterManga(id),
+    jikan.characters.getCharacterVoices(id),
+    jikan.characters.getCharacterPictures(id)
+  ]);
+
+  return {
+    basic: character.data,
+    animeAppearances: animeAppearances.data,
+    mangaAppearances: mangaAppearances.data,
+    voiceActors: voices.data,
+    pictures: pictures.data
+  };
+}
+
+// Usage
+const characterDetails = await getCharacterDetails(1);
+console.log('Character details:', characterDetails);
+```
+
+### Find Character Voice Actors
+
+```typescript
+async function getCharacterVoiceActors(characterId: number) {
+  const voices = await jikan.characters.getCharacterVoices(characterId);
+  
+  const voiceActorsByLanguage = voices.data.reduce((acc, voice) => {
+    if (!acc[voice.language]) {
+      acc[voice.language] = [];
+    }
+    acc[voice.language].push({
+      name: voice.person.name,
+      url: voice.person.url
+    });
+    return acc;
+  }, {} as Record<string, Array<{name: string, url: string}>>);
+
+  return voiceActorsByLanguage;
+}
+
+// Usage
+const voiceActors = await getCharacterVoiceActors(1);
+console.log('Japanese VAs:', voiceActors.Japanese);
+console.log('English VAs:', voiceActors.English);
+```
+
+### Character Appearance Analysis
+
+```typescript
+async function analyzeCharacterAppearances(characterId: number) {
+  const [animeAppearances, mangaAppearances] = await Promise.all([
+    jikan.characters.getCharacterAnime(characterId),
+    jikan.characters.getCharacterManga(characterId)
+  ]);
+
+  const stats = {
+    totalAnime: animeAppearances.data.length,
+    totalManga: mangaAppearances.data.length,
+    mainRoles: {
+      anime: animeAppearances.data.filter(a => a.role === 'Main').length,
+      manga: mangaAppearances.data.filter(m => m.role === 'Main').length
+    },
+    supportingRoles: {
+      anime: animeAppearances.data.filter(a => a.role === 'Supporting').length,
+      manga: mangaAppearances.data.filter(m => m.role === 'Supporting').length
+    }
+  };
+
+  return {
+    stats,
+    animeList: animeAppearances.data.map(a => ({ title: a.anime.title, role: a.role })),
+    mangaList: mangaAppearances.data.map(m => ({ title: m.manga.title, role: m.role }))
+  };
+}
+
+// Usage
+const analysis = await analyzeCharacterAppearances(1);
+console.log('Character appeared in', analysis.stats.totalAnime, 'anime and', analysis.stats.totalManga, 'manga');
 ```
 
 ## Contributing
