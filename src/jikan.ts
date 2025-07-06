@@ -4,6 +4,7 @@
 
 import JikanHttpClient from "./client/http-client";
 import { Anime } from "./endpoints/anime";
+import { Manga } from "./endpoints/manga";
 
 /**
  * Main Jikan API client class that provides access to various endpoints
@@ -14,6 +15,7 @@ import { Anime } from "./endpoints/anime";
  * 
  * const jikan = new Jikan();
  * const anime = await jikan.anime.getAnimeByFullId(1);
+ * const manga = await jikan.manga.getMangaByFullId(1);
  * ```
  */
 class Jikan {
@@ -36,6 +38,12 @@ class Jikan {
     anime: Anime;
     
     /**
+     * Manga endpoint accessor
+     * @public
+     */
+    manga: Manga;
+    
+    /**
      * Creates a new Jikan API client instance
      * @param {string} [baseUrl] - Custom base URL for the API (optional)
      * @example
@@ -53,6 +61,7 @@ class Jikan {
         }
         this.client = new JikanHttpClient(this._baseUrl);
         this.anime = new Anime(this.client);
+        this.manga = new Manga(this.client);
     }
 }
 

@@ -10,7 +10,7 @@ A modern TypeScript wrapper for the [Jikan API](https://jikan.moe/) - the unoffi
 
 - 🎯 **Full TypeScript support** with comprehensive type definitions
 - 🚀 **Modern ES modules** - Tree-shakable and lightweight
-- 📚 **Complete API coverage** - All Jikan v4 anime endpoints
+- 📚 **Complete API coverage** - All Jikan v4 anime and manga endpoints
 - 🛡️ **Built-in error handling** - Graceful API error management
 - 🧪 **Thoroughly tested** - 100% test coverage
 - 📖 **Extensive documentation** - JSDoc comments for all methods
@@ -41,12 +41,21 @@ const jikan = new Jikan();
 const anime = await jikan.anime.getAnimeByFullId(1);
 console.log(anime.data.titles[0].title); // "Cowboy Bebop"
 
+// Get manga information
+const manga = await jikan.manga.getMangaByFullId(1);
+console.log(manga.data.titles[0].title); // "Monster"
+
 // Search for anime
-const searchResults = await jikan.anime.searchAnime({ 
+const animeResults = await jikan.anime.searchAnime({ 
   q: 'Naruto', 
   type: 'TV' 
 });
-console.log(searchResults.data[0].titles[0].title);
+
+// Search for manga
+const mangaResults = await jikan.manga.searchManga({ 
+  q: 'One Piece', 
+  type: 'Manga' 
+});
 ```
 
 ## API Reference
@@ -379,6 +388,248 @@ updates.data.forEach(update => {
 });
 ```
 
+### Manga Endpoints
+
+#### Basic Information
+
+##### `getMangaByFullId(id: number)`
+
+Retrieves complete manga information by MyAnimeList ID.
+
+```typescript
+const manga = await jikan.manga.getMangaByFullId(1);
+console.log({
+  title: manga.data.titles[0].title,
+  score: manga.data.score,
+  chapters: manga.data.chapters,
+  volumes: manga.data.volumes,
+  status: manga.data.status
+});
+```
+
+##### `getMangaById(id: number)`
+
+Retrieves basic manga information by MyAnimeList ID.
+
+```typescript
+const manga = await jikan.manga.getMangaById(1);
+console.log({
+  title: manga.data.titles[0].title,
+  type: manga.data.type,
+  publishing: manga.data.publishing
+});
+```
+
+##### `searchManga(params?: SearchParams)`
+
+Search for manga with various filters.
+
+```typescript
+// Basic search
+const results = await jikan.manga.searchManga({ q: 'One Piece' });
+
+// Advanced search with filters
+const filteredResults = await jikan.manga.searchManga({
+  q: 'Attack on Titan',
+  type: 'Manga',
+  status: 'Finished',
+  min_score: 8.0,
+  order_by: 'score',
+  sort: 'desc',
+  limit: 10
+});
+```
+
+**Search Parameters:**
+- `q?: string` - Search query
+- `type?: string` - Manga type (Manga, Light Novel, One-shot, Doujinshi, Manhwa, Manhua, Novel)
+- `score?: number` - Score filter
+- `min_score?: number` - Minimum score
+- `max_score?: number` - Maximum score
+- `status?: string` - Publishing status
+- `sfw?: boolean` - Safe for work filter
+- `genres?: string` - Comma-separated genre IDs
+- `order_by?: string` - Field to order by
+- `sort?: string` - Sort direction (asc, desc)
+- `magazines?: string` - Comma-separated magazine IDs
+- `page?: number` - Page number
+- `limit?: number` - Results per page
+
+#### Characters & Staff
+
+##### `getMangaCharacters(id: number)`
+
+Get character information for a manga.
+
+```typescript
+const characters = await jikan.manga.getMangaCharacters(1);
+characters.data.forEach(char => {
+  console.log({
+    name: char.character.name,
+    role: char.role
+  });
+});
+```
+
+#### Community Content
+
+##### `getMangaNews(id: number, page?: number)`
+
+Get news articles related to a manga.
+
+```typescript
+const news = await jikan.manga.getMangaNews(1);
+news.data.forEach(article => {
+  console.log({
+    title: article.title,
+    author: article.author_username,
+    date: article.date,
+    excerpt: article.excerpt
+  });
+});
+```
+
+##### `getMangaReviews(id: number, page?: number, preliminary?: boolean, spoilers?: boolean)`
+
+Get user reviews for a manga.
+
+```typescript
+const reviews = await jikan.manga.getMangaReviews(1);
+reviews.data.forEach(review => {
+  console.log({
+    reviewer: review.user.username,
+    overallScore: review.scores.overall,
+    review: review.review.substring(0, 100) + '...',
+    chaptersRead: review.chapters_read
+  });
+});
+
+// Get reviews with filters
+const filteredReviews = await jikan.manga.getMangaReviews(1, 1, true, false);
+```
+
+##### `getMangaForum(id: number)`
+
+Get forum topics related to a manga.
+
+```typescript
+const forum = await jikan.manga.getMangaForum(1);
+forum.data.forEach(topic => {
+  console.log({
+    title: topic.title,
+    author: topic.author_username,
+    comments: topic.comments,
+    lastComment: topic.last_comment?.date_posted
+  });
+});
+```
+
+#### Media & Content
+
+##### `getMangaPictures(id: number)`
+
+Get picture gallery for a manga.
+
+```typescript
+const pictures = await jikan.manga.getMangaPictures(1);
+pictures.data.forEach(picture => {
+  console.log({
+    large: picture.large_image_url,
+    small: picture.small_image_url
+  });
+});
+```
+
+#### Statistics & Related Content
+
+##### `getMangaStatistics(id: number)`
+
+Get reading statistics for a manga.
+
+```typescript
+const stats = await jikan.manga.getMangaStatistics(1);
+console.log({
+  reading: stats.data.reading,
+  completed: stats.data.completed,
+  onHold: stats.data.on_hold,
+  dropped: stats.data.dropped,
+  planToRead: stats.data.plan_to_read,
+  total: stats.data.total
+});
+```
+
+##### `getMangaRecommendations(id: number)`
+
+Get manga recommendations.
+
+```typescript
+const recommendations = await jikan.manga.getMangaRecommendations(1);
+recommendations.data.forEach(rec => {
+  console.log({
+    title: rec.entry.title,
+    votes: rec.votes,
+    url: rec.entry.url
+  });
+});
+```
+
+##### `getMangaRelations(id: number)`
+
+Get related manga/anime (sequels, prequels, etc.).
+
+```typescript
+const relations = await jikan.manga.getMangaRelations(1);
+relations.data.forEach(relation => {
+  console.log({
+    relation: relation.relation,
+    entries: relation.entry.map(e => ({ name: e.name, type: e.type }))
+  });
+});
+```
+
+#### Additional Information
+
+##### `getMangaExternal(id: number)`
+
+Get external links.
+
+```typescript
+const external = await jikan.manga.getMangaExternal(1);
+external.data.forEach(link => {
+  console.log({
+    name: link.name,
+    url: link.url
+  });
+});
+```
+
+##### `getMangaMoreInfo(id: number)`
+
+Get additional information.
+
+```typescript
+const moreInfo = await jikan.manga.getMangaMoreInfo(1);
+console.log(moreInfo.data.moreinfo);
+```
+
+##### `getMangaUserUpdates(id: number, page?: number)`
+
+Get recent user updates.
+
+```typescript
+const updates = await jikan.manga.getMangaUserUpdates(1);
+updates.data.forEach(update => {
+  console.log({
+    user: update.user.username,
+    status: update.status,
+    chaptersRead: update.chapters_read,
+    volumesRead: update.volumes_read,
+    score: update.score,
+    date: update.date
+  });
+});
+```
+
 ## Error Handling
 
 The library throws errors for failed API requests:
@@ -397,17 +648,24 @@ try {
 This library is written in TypeScript and provides comprehensive type definitions:
 
 ```typescript
-import Jikan, { AnimeResponse, JikanResponse } from 'jikan-api.js';
+import Jikan, { AnimeResponse, MangaResponse, JikanResponse } from 'jikan-api.js';
 
 const jikan = new Jikan();
 
-// Full type safety
+// Full type safety for anime
 const anime: JikanResponse<AnimeResponse> = await jikan.anime.getAnimeByFullId(1);
+
+// Full type safety for manga
+const manga: JikanResponse<MangaResponse> = await jikan.manga.getMangaByFullId(1);
 
 // TypeScript will provide autocomplete and type checking
 console.log(anime.data.titles[0].title);
 console.log(anime.data.score);
 console.log(anime.data.episodes);
+
+console.log(manga.data.titles[0].title);
+console.log(manga.data.score);
+console.log(manga.data.chapters);
 ```
 
 ## Pagination
@@ -521,6 +779,99 @@ async function getAnimeDetails(id: number) {
 // Usage
 const fullDetails = await getAnimeDetails(1);
 console.log('Full anime details:', fullDetails);
+```
+
+### Get Top Manga
+
+```typescript
+const topManga = await jikan.manga.searchManga({
+  order_by: 'score',
+  sort: 'desc',
+  limit: 10
+});
+
+console.log('Top 10 Manga:');
+topManga.data.forEach((manga, index) => {
+  console.log(`${index + 1}. ${manga.titles[0].title} (Score: ${manga.score})`);
+});
+```
+
+### Find Manga by Genre
+
+```typescript
+// Get romance manga (genre ID 22)
+const romanceManga = await jikan.manga.searchManga({
+  genres: '22',
+  order_by: 'popularity',
+  sort: 'asc',
+  limit: 5
+});
+
+console.log('Popular Romance Manga:');
+romanceManga.data.forEach(manga => {
+  console.log(`${manga.titles[0].title} - Chapters: ${manga.chapters || 'Ongoing'}`);
+});
+```
+
+### Get Manga with Full Details
+
+```typescript
+async function getMangaDetails(id: number) {
+  // Get all information about a manga
+  const [
+    manga,
+    characters,
+    news,
+    reviews,
+    stats,
+    recommendations
+  ] = await Promise.all([
+    jikan.manga.getMangaByFullId(id),
+    jikan.manga.getMangaCharacters(id),
+    jikan.manga.getMangaNews(id),
+    jikan.manga.getMangaReviews(id),
+    jikan.manga.getMangaStatistics(id),
+    jikan.manga.getMangaRecommendations(id)
+  ]);
+
+  return {
+    basic: manga.data,
+    characters: characters.data,
+    news: news.data,
+    reviews: reviews.data,
+    statistics: stats.data,
+    recommendations: recommendations.data
+  };
+}
+
+// Usage
+const fullMangaDetails = await getMangaDetails(1);
+console.log('Full manga details:', fullMangaDetails);
+```
+
+### Compare Anime and Manga
+
+```typescript
+async function compareAnimeAndManga(animeId: number, mangaId: number) {
+  const [anime, manga] = await Promise.all([
+    jikan.anime.getAnimeByFullId(animeId),
+    jikan.manga.getMangaByFullId(mangaId)
+  ]);
+
+  console.log('Comparison:');
+  console.log(`Anime: ${anime.data.titles[0].title} - Score: ${anime.data.score}`);
+  console.log(`Manga: ${manga.data.titles[0].title} - Score: ${manga.data.score}`);
+  
+  return {
+    anime: anime.data,
+    manga: manga.data,
+    animeScore: anime.data.score,
+    mangaScore: manga.data.score
+  };
+}
+
+// Usage
+const comparison = await compareAnimeAndManga(1, 1);
 ```
 
 ## Contributing
