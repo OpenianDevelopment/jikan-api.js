@@ -1,27 +1,51 @@
 {
   "name": "jikan-api.js",
-  "version": "1.0.3",
-  "description": "API Wrapper for Jikan v4",
+  "version": "2.0.0",
+  "description": "A modern TypeScript wrapper for the Jikan API - the unofficial MyAnimeList API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "Rohan Kumar",
-  "license": "MIT",
-  "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenianDevelopment/jikan-api.js.git"
   },
-  "dependencies": {
-    "@types/node-fetch": "^2.5.12",
-    "node-fetch": "^2.6.1",
-    "prettier": "^2.3.2"
+  "homepage": "https://github.com/OpenianDevelopment/jikan-api.js#readme",
+  "bugs": {
+    "url": "https://github.com/OpenianDevelopment/jikan-api.js/issues"
+  },
+  "author": "Rohan Kumar <rohan.shuvam@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "jikan",
+    "myanimelist",
+    "anime",
+    "manga",
+    "characters",
+    "api",
+    "typescript",
+    "wrapper",
+    "mal"
+  ],
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build && npm test"
   },
   "devDependencies": {
-    "chalk": "^4.1.2",
-    "typedoc": "^0.21.6"
-  },
-  "files": [
-    "dist"
-  ],
-  "repository": "https://github.com/rohank05/jikan-api.js",
-  "bugs": "https://github.com/rohank05/jikan-api.js/issues"
+    "@types/jest": "^29.5.12",
+    "@types/node": "^24.0.10",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.8.3"
+  }
 }
