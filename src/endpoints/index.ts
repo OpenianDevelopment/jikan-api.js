@@ -6,3 +6,9 @@
 export { Anime } from './anime';
 export { Manga } from './manga';
 export { Characters } from './characters';
+export { Users } from './users';
+export { Recommendations } from './recommendations';
+export { People } from './people';
+export { Genres } from './genres';
+export { Schedules } from './schedules';
+export { Random } from './random';

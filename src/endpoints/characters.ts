@@ -8,7 +8,8 @@ import {
     CharacterAnimeResponse,
     CharacterMangaResponse,
     CharacterVoiceActorResponse,
-    CharacterPictureResponse
+    CharacterPictureResponse,
+    CharacterSearchParams
 } from "../types/characters";
 import JikanResponse from "../types/common";
 
@@ -133,5 +134,37 @@ export class Characters {
      */
     getCharacterPictures(id: number): Promise<JikanResponse<CharacterPictureResponse[]>> {
         return this.client.get<JikanResponse<CharacterPictureResponse[]>>(`/characters/${id}/pictures`);
+    }
+
+    /**
+     * Searches for characters
+     * @param {CharacterSearchParams} [params={}] - Search parameters
+     * @returns {Promise<JikanResponse<CharacterResponse[]>>} Promise that resolves to search results
+     * @example
+     * ```typescript
+     * const characters = await jikan.characters.searchCharacters({ q: 'Spike' });
+     * characters.data.forEach(character => {
+     *   console.log(character.name);
+     * });
+     * 
+     * // Advanced search
+     * const results = await jikan.characters.searchCharacters({
+     *   q: 'main character',
+     *   order_by: 'favorites',
+     *   sort: 'desc',
+     *   limit: 10
+     * });
+     * ```
+     */
+    async searchCharacters(params: CharacterSearchParams = {}): Promise<JikanResponse<CharacterResponse[]>> {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined) {
+                queryParams.append(key, value.toString());
+            }
+        });
+        
+        const url = `characters${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+        return this.client.get<CharacterResponse[]>(url);
     }
 }

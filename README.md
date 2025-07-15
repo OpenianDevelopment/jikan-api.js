@@ -49,6 +49,10 @@ console.log(manga.data.titles[0].title); // "Monster"
 const character = await jikan.characters.getCharacterByFullId(1);
 console.log(character.data.name); // "Spike Spiegel"
 
+// Get recent anime recommendations
+const animeRecs = await jikan.recommendations.getRecentAnimeRecommendations();
+console.log(animeRecs.data[0].content); // Recommendation text
+
 // Search for anime
 const animeResults = await jikan.anime.searchAnime({ 
   q: 'Naruto', 
@@ -1069,6 +1073,545 @@ async function analyzeCharacterAppearances(characterId: number) {
 // Usage
 const analysis = await analyzeCharacterAppearances(1);
 console.log('Character appeared in', analysis.stats.totalAnime, 'anime and', analysis.stats.totalManga, 'manga');
+```
+
+### Recommendations Endpoints
+
+#### Recent Recommendations
+
+##### `getRecentAnimeRecommendations(page?: number)`
+
+Get recent anime recommendations from the community.
+
+```typescript
+const recommendations = await jikan.recommendations.getRecentAnimeRecommendations();
+recommendations.data.forEach(rec => {
+  console.log(`${rec.entry[0].title} recommended with ${rec.entry[1].title}`);
+  console.log(`Recommendation: ${rec.content}`);
+  console.log(`By: ${rec.user.username} on ${rec.date}`);
+});
+
+// Get specific page
+const page2 = await jikan.recommendations.getRecentAnimeRecommendations(2);
+```
+
+##### `getRecentMangaRecommendations(page?: number)`
+
+Get recent manga recommendations from the community.
+
+```typescript
+const recommendations = await jikan.recommendations.getRecentMangaRecommendations();
+recommendations.data.forEach(rec => {
+  console.log(`${rec.entry[0].title} recommended with ${rec.entry[1].title}`);
+  console.log(`Recommendation: ${rec.content}`);
+  console.log(`By: ${rec.user.username} on ${rec.date}`);
+});
+
+// Get specific page
+const page3 = await jikan.recommendations.getRecentMangaRecommendations(3);
+```
+
+**Recommendation Structure:**
+- Each recommendation contains exactly 2 entries for comparison
+- `entry[0]` and `entry[1]` contain the recommended content with basic information
+- `content` contains the user's recommendation text
+- `user` contains information about who made the recommendation
+- `date` contains when the recommendation was created
+
+### Users Endpoints
+
+#### Basic User Information
+
+##### `getUserByUsername(username: string)`
+
+Retrieves basic user profile information.
+
+```typescript
+const user = await jikan.users.getUserByUsername('username');
+console.log({
+  username: user.data.username,
+  joined: user.data.joined,
+  lastOnline: user.data.last_online,
+  url: user.data.url
+});
+```
+
+##### `getUserFullProfile(username: string)`
+
+Retrieves complete user profile information including extended details.
+
+```typescript
+const user = await jikan.users.getUserFullProfile('username');
+console.log({
+  username: user.data.username,
+  about: user.data.about,
+  joined: user.data.joined,
+  location: user.data.location
+});
+```
+
+##### `getUserAbout(username: string)`
+
+Retrieves user's profile description/about section.
+
+```typescript
+const about = await jikan.users.getUserAbout('username');
+console.log(about.data.about);
+```
+
+#### User Statistics
+
+##### `getUserStatistics(username: string)`
+
+Get user's anime and manga viewing/reading statistics.
+
+```typescript
+const stats = await jikan.users.getUserStatistics('username');
+console.log({
+  animeCompleted: stats.data.anime.completed,
+  animeWatching: stats.data.anime.watching,
+  daysWatched: stats.data.anime.days_watched,
+  meanScore: stats.data.anime.mean_score,
+  
+  mangaCompleted: stats.data.manga.completed,
+  mangaReading: stats.data.manga.reading,
+  daysRead: stats.data.manga.days_read,
+  chaptersRead: stats.data.manga.chapters_read
+});
+```
+
+#### User Lists
+
+##### `getUserAnimeList(username: string, params?: object)`
+
+Get user's anime list with optional filtering.
+
+```typescript
+// Get all anime
+const animeList = await jikan.users.getUserAnimeList('username');
+
+// Filter by status
+const completed = await jikan.users.getUserAnimeList('username', { 
+  status: 'completed' 
+});
+
+const watching = await jikan.users.getUserAnimeList('username', { 
+  status: 'watching' 
+});
+
+// With pagination
+const page2 = await jikan.users.getUserAnimeList('username', { 
+  status: 'completed',
+  page: 2 
+});
+```
+
+**Available status filters:**
+- `watching` - Currently watching
+- `completed` - Completed
+- `on_hold` - On hold
+- `dropped` - Dropped
+- `plan_to_watch` - Plan to watch
+
+##### `getUserMangaList(username: string, params?: object)`
+
+Get user's manga list with optional filtering.
+
+```typescript
+// Get all manga
+const mangaList = await jikan.users.getUserMangaList('username');
+
+// Filter by status
+const reading = await jikan.users.getUserMangaList('username', { 
+  status: 'reading' 
+});
+
+const completed = await jikan.users.getUserMangaList('username', { 
+  status: 'completed' 
+});
+```
+
+**Available status filters:**
+- `reading` - Currently reading
+- `completed` - Completed
+- `on_hold` - On hold
+- `dropped` - Dropped
+- `plan_to_read` - Plan to read
+
+#### User Favorites
+
+##### `getUserFavorites(username: string)`
+
+Get user's favorite anime, manga, characters, and people.
+
+```typescript
+const favorites = await jikan.users.getUserFavorites('username');
+console.log({
+  favoriteAnime: favorites.data.anime,
+  favoriteManga: favorites.data.manga,
+  favoriteCharacters: favorites.data.characters,
+  favoritePeople: favorites.data.people
+});
+```
+
+#### Social Features
+
+##### `getUserFriends(username: string, page?: number)`
+
+Get user's friends list.
+
+```typescript
+const friends = await jikan.users.getUserFriends('username');
+friends.data.forEach(friend => {
+  console.log({
+    username: friend.username,
+    url: friend.url,
+    friendsSince: friend.friends_since
+  });
+});
+
+// Get specific page
+const friendsPage2 = await jikan.users.getUserFriends('username', 2);
+```
+
+##### `getUserClubs(username: string, page?: number)`
+
+Get clubs the user is a member of.
+
+```typescript
+const clubs = await jikan.users.getUserClubs('username');
+clubs.data.forEach(club => {
+  console.log({
+    name: club.name,
+    url: club.url,
+    members: club.members
+  });
+});
+```
+
+#### User Content
+
+##### `getUserReviews(username: string, page?: number)`
+
+Get reviews written by the user.
+
+```typescript
+const reviews = await jikan.users.getUserReviews('username');
+reviews.data.forEach(review => {
+  console.log({
+    anime: review.entry.title,
+    overallScore: review.scores.overall,
+    review: review.review.substring(0, 100) + '...',
+    date: review.date
+  });
+});
+```
+
+##### `getUserRecommendations(username: string, page?: number)`
+
+Get recommendations made by the user.
+
+```typescript
+const recommendations = await jikan.users.getUserRecommendations('username');
+recommendations.data.forEach(rec => {
+  console.log({
+    content: rec.content,
+    entry1: rec.entry[0].title,
+    entry2: rec.entry[1].title,
+    date: rec.date
+  });
+});
+```
+
+##### `getUserUpdates(username: string)`
+
+Get user's recent activity (anime/manga progress updates).
+
+```typescript
+const updates = await jikan.users.getUserUpdates('username');
+updates.data.forEach(update => {
+  console.log({
+    title: update.entry.title,
+    status: update.status,
+    progress: update.episodes_seen || update.chapters_read,
+    score: update.score,
+    date: update.date
+  });
+});
+```
+
+#### User Search
+
+##### `searchUsers(params?: object)`
+
+Search for users by username.
+
+```typescript
+// Basic search
+const users = await jikan.users.searchUsers({ q: 'username' });
+
+// With pagination and limit
+const searchResults = await jikan.users.searchUsers({
+  q: 'user',
+  page: 1,
+  limit: 10
+});
+
+users.data.forEach(user => {
+  console.log({
+    username: user.username,
+    joined: user.joined,
+    lastOnline: user.last_online
+  });
+});
+```
+
+**Search Parameters:**
+- `q?: string` - Search query (username)
+- `page?: number` - Page number for pagination
+- `limit?: number` - Results per page (max 25)
+
+### People Endpoints
+
+#### Basic Person Information
+
+##### `getPersonById(id: number)`
+
+Retrieves basic person information.
+
+```typescript
+const person = await jikan.people.getPersonById(1);
+console.log({
+  name: person.data.name,
+  birthday: person.data.birthday,
+  favorites: person.data.favorites
+});
+```
+
+##### `getPersonFullById(id: number)`
+
+Retrieves complete person information.
+
+```typescript
+const person = await jikan.people.getPersonFullById(1);
+console.log({
+  name: person.data.name,
+  about: person.data.about,
+  alternateNames: person.data.alternate_names
+});
+```
+
+#### Person Work & Roles
+
+##### `getPersonAnime(id: number)`
+
+Get anime work for a person.
+
+```typescript
+const animeWork = await jikan.people.getPersonAnime(1);
+animeWork.data.forEach(work => {
+  console.log(`${work.position} for ${work.anime.title}`);
+});
+```
+
+##### `getPersonManga(id: number)`
+
+Get manga work for a person.
+
+```typescript
+const mangaWork = await jikan.people.getPersonManga(1);
+mangaWork.data.forEach(work => {
+  console.log(`${work.position} for ${work.manga.title}`);
+});
+```
+
+##### `getPersonVoices(id: number)`
+
+Get voice acting roles for a person.
+
+```typescript
+const voices = await jikan.people.getPersonVoices(1);
+voices.data.forEach(voice => {
+  console.log(`${voice.character.name} in ${voice.anime.title} (${voice.role})`);
+});
+```
+
+#### Person Media
+
+##### `getPersonPictures(id: number)`
+
+Get pictures for a person.
+
+```typescript
+const pictures = await jikan.people.getPersonPictures(1);
+pictures.data.forEach(picture => {
+  console.log(picture.large_image_url);
+});
+```
+
+##### `getPersonExternal(id: number)`
+
+Get external links for a person.
+
+```typescript
+const external = await jikan.people.getPersonExternal(1);
+external.data.forEach(link => {
+  console.log(`${link.name}: ${link.url}`);
+});
+```
+
+#### Person Search
+
+##### `searchPeople(params?: object)`
+
+Search for people.
+
+```typescript
+const people = await jikan.people.searchPeople({ q: 'Hayao Miyazaki' });
+people.data.forEach(person => {
+  console.log(person.name);
+});
+
+// Advanced search
+const results = await jikan.people.searchPeople({
+  q: 'director',
+  order_by: 'favorites',
+  sort: 'desc',
+  limit: 10
+});
+```
+
+### Genres Endpoints
+
+##### `getAnimeGenres()`
+
+Get all available anime genres.
+
+```typescript
+const genres = await jikan.genres.getAnimeGenres();
+genres.data.forEach(genre => {
+  console.log(`${genre.name} (${genre.count} anime)`);
+});
+```
+
+##### `getMangaGenres()`
+
+Get all available manga genres.
+
+```typescript
+const genres = await jikan.genres.getMangaGenres();
+genres.data.forEach(genre => {
+  console.log(`${genre.name} (${genre.count} manga)`);
+});
+```
+
+### Schedules Endpoints
+
+##### `getSchedules(params?: object)`
+
+Get anime schedule information.
+
+```typescript
+// Get all scheduled anime
+const schedule = await jikan.schedules.getSchedules();
+
+// Get Monday anime only
+const mondayAnime = await jikan.schedules.getSchedules({ 
+  filter: 'monday' 
+});
+
+// Get safe-for-work anime with pagination
+const sfwSchedule = await jikan.schedules.getSchedules({
+  sfw: true,
+  page: 2,
+  limit: 10
+});
+
+schedule.data.forEach(anime => {
+  console.log(`${anime.title} - ${anime.broadcast.string}`);
+});
+```
+
+**Day-specific methods:**
+- `getMondaySchedule(page?: number)`
+- `getTuesdaySchedule(page?: number)`
+- `getWednesdaySchedule(page?: number)`
+- `getThursdaySchedule(page?: number)`
+- `getFridaySchedule(page?: number)`
+- `getSaturdaySchedule(page?: number)`
+- `getSundaySchedule(page?: number)`
+
+### Random Endpoints
+
+##### `getRandomAnime()`
+
+Get a random anime.
+
+```typescript
+const randomAnime = await jikan.random.getRandomAnime();
+console.log(`Random anime: ${randomAnime.data.titles[0].title}`);
+console.log(`Score: ${randomAnime.data.score}`);
+```
+
+##### `getRandomManga()`
+
+Get a random manga.
+
+```typescript
+const randomManga = await jikan.random.getRandomManga();
+console.log(`Random manga: ${randomManga.data.titles[0].title}`);
+console.log(`Score: ${randomManga.data.score}`);
+```
+
+##### `getRandomCharacter()`
+
+Get a random character.
+
+```typescript
+const randomCharacter = await jikan.random.getRandomCharacter();
+console.log(`Random character: ${randomCharacter.data.name}`);
+console.log(`Favorites: ${randomCharacter.data.favorites}`);
+```
+
+##### `getRandomPerson()`
+
+Get a random person.
+
+```typescript
+const randomPerson = await jikan.random.getRandomPerson();
+console.log(`Random person: ${randomPerson.data.name}`);
+console.log(`Favorites: ${randomPerson.data.favorites}`);
+```
+
+##### `getRandomUser()`
+
+Get a random user.
+
+```typescript
+const randomUser = await jikan.random.getRandomUser();
+console.log(`Random user: ${randomUser.data.username}`);
+console.log(`Joined: ${randomUser.data.joined}`);
+```
+
+### Characters Search
+
+##### `searchCharacters(params?: object)`
+
+Search for characters.
+
+```typescript
+const characters = await jikan.characters.searchCharacters({ q: 'Spike' });
+characters.data.forEach(character => {
+  console.log(character.name);
+});
+
+// Advanced search
+const results = await jikan.characters.searchCharacters({
+  q: 'main character',
+  order_by: 'favorites',
+  sort: 'desc',
+  limit: 10
+});
 ```
 
 ## Contributing

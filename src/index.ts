@@ -12,6 +12,7 @@ import Jikan from "./jikan";
 export * from "./types/anime";
 export * from "./types/manga";
 export * from "./types/characters";
+export * from "./types/users";
 export * from "./types/common";
 
 // Export the main Jikan class as the default export
