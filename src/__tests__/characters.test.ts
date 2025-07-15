@@ -419,4 +419,51 @@ describe('Characters Class', () => {
             }
         });
     });
+
+    describe('searchCharacters', () => {
+        it('should search characters without parameters', async () => {
+            const mockResponse: JikanResponse<CharacterResponse[]> = {
+                data: []
+            };
+
+            mockHttpClient.get.mockResolvedValue(mockResponse);
+
+            const result = await charactersClient.searchCharacters();
+
+            expect(mockHttpClient.get).toHaveBeenCalledWith('characters');
+            expect(result).toEqual(mockResponse);
+        });
+
+        it('should search characters with query', async () => {
+            const mockResponse: JikanResponse<CharacterResponse[]> = {
+                data: []
+            };
+
+            mockHttpClient.get.mockResolvedValue(mockResponse);
+
+            const result = await charactersClient.searchCharacters({ q: 'Spike' });
+
+            expect(mockHttpClient.get).toHaveBeenCalledWith('characters?q=Spike');
+            expect(result).toEqual(mockResponse);
+        });
+
+        it('should search characters with multiple parameters', async () => {
+            const mockResponse: JikanResponse<CharacterResponse[]> = {
+                data: []
+            };
+
+            mockHttpClient.get.mockResolvedValue(mockResponse);
+
+            const result = await charactersClient.searchCharacters({
+                q: 'main character',
+                order_by: 'favorites',
+                sort: 'desc',
+                limit: 10,
+                page: 2
+            });
+
+            expect(mockHttpClient.get).toHaveBeenCalledWith('characters?q=main+character&order_by=favorites&sort=desc&limit=10&page=2');
+            expect(result).toEqual(mockResponse);
+        });
+    });
 });

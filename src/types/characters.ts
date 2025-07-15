@@ -155,6 +155,23 @@ interface CharacterPictureResponse {
     small_image_url: string;
 }
 
+/**
+ * Search parameters for characters
+ * @interface CharacterSearchParams
+ */
+export interface CharacterSearchParams {
+    /** Search query */
+    q?: string;
+    /** Page number */
+    page?: number;
+    /** Results per page */
+    limit?: number;
+    /** Order by field */
+    order_by?: string;
+    /** Sort direction */
+    sort?: string;
+}
+
 export type { 
     CharacterResponse,
     CharacterAnimeResponse,
